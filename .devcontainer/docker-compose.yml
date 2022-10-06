@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  workspace:
+    container_name: ${PROJECT_NAME:-default}-workspace-container
+    build:
+      context: ./docker/workspace
+      args:
+        USERNAME: ${USERNAME:-vscode}
+        USER_GROUP_NAME: ${USER_GROUP_NAME:-workspace}
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+    tty: true
+
+    volumes:
+      - ../:/home/${USERNAME:-vscode}/workspace:cached
+    working_dir: /workspace
