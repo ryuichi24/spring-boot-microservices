@@ -4,5 +4,6 @@
 
 ## Create `.env` file for the dev container
 ```bash
-./make_env.sh
+curl -s "https://raw.githubusercontent.com/ryuichi24/spring-boot-microservices/starter-template/init.sh" | bash \
+    && cd spring-boot-microservices
 ```
