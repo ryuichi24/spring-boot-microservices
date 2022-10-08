@@ -16,6 +16,22 @@ services:
       - ../:/home/${USERNAME:-vscode}/workspace:cached
     working_dir: /workspace
 
+  author-api-mysql:
+    container_name: ${PROJECT_NAME:-default}-author-api-mysql-container
+    restart: always
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - ${DB_PORT:-3306}:3306
+    volumes:
+      # - ./docker/mysql/init-tables.sql:/docker-entrypoint-initdb.d/init-tables.sql
+      - ./.docker/author_api_mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${AUTHOR_API_DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
+      MYSQL_DATABASE: ${AUTHOR_API_DB_DATABASE:-dev}
+      MYSQL_USER: ${AUTHOR_API_DB_USER:-mysql}
+      MYSQL_PASSWORD: ${AUTHOR_API_DB_PASSWORD:-thisIsReallyStrongPassword123}
+
   nginx:
     build:
       context: ./docker/nginx

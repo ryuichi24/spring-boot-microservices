@@ -20,6 +20,7 @@
 	"vscjava.vscode-java-pack",
 	"vscjava.vscode-spring-initializr",
 	"vscjava.vscode-gradle",
-	"rangav.vscode-thunder-client"
+	"rangav.vscode-thunder-client",
+	"cweijan.vscode-mysql-client2"
 ]
 }
