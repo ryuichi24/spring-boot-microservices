@@ -14,11 +14,12 @@
     "git.mergeEditor": false
   },
   "extensions": [
-    "esbenp.prettier-vscode",
-    "streetsidesoftware.code-spell-checker",
-    "fosshaas.fontsize-shortcuts",
-    "vscjava.vscode-java-pack",
-    "vscjava.vscode-spring-initializr",
-    "vscjava.vscode-gradle"
-  ]
+	"esbenp.prettier-vscode",
+	"streetsidesoftware.code-spell-checker",
+	"fosshaas.fontsize-shortcuts",
+	"vscjava.vscode-java-pack",
+	"vscjava.vscode-spring-initializr",
+	"vscjava.vscode-gradle",
+	"rangav.vscode-thunder-client"
+]
 }

@@ -1,0 +1,16 @@
+[
+  {
+    "_id": "6a5ab2f2-74c0-4d94-92ff-25e201f0b575",
+    "name": "dev container",
+    "default": true,
+    "sortNum": 5000,
+    "created": "2022-10-08T05:40:20.939Z",
+    "modified": "2022-10-08T05:40:32.472Z",
+    "data": [
+      {
+        "name": "BASE_URL",
+        "value": "http://nginx:80"
+      }
+    ]
+  }
+]
