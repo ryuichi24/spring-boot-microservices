@@ -1,3 +1,5 @@
 .env
 .vscode
 .docker
+.gradle
+build

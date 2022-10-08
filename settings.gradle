@@ -1,0 +1,5 @@
+rootProject.name = "book-database"
+include("author-api")
+include("book-api")
+include("comment-api")
+include("shared")
