@@ -22,8 +22,8 @@ RUN su ${USERNAME} --command \
     'sudo git config --system --add safe.directory "/home/${USERNAME}/workspace"'
 
 # ---------------------------------- sdkman ----------------------------------
-ARG JAVA_VERSION=18.0.2-amzn
-ARG GRADLE_VERSION="7.5"
+ARG JAVA_VERSION="19-amzn"
+ARG GRADLE_VERSION="7.5.1"
 
 RUN su ${USERNAME} --command \
     'curl -s "https://get.sdkman.io" | bash \
