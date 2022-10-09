@@ -18,7 +18,7 @@ services:
 
   author-api-mysql:
     container_name: ${PROJECT_NAME:-default}-author-api-mysql-container
-    restart: always
+    restart: unless-stopped
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
     ports:
@@ -35,6 +35,7 @@ services:
   nginx:
     build:
       context: ./docker/nginx
+    restart: unless-stopped
     container_name: ${PROJECT_NAME:-default}-nginx-container
     ports:
       - 3333:80
