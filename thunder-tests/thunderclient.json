@@ -120,5 +120,85 @@
       "form": []
     },
     "tests": []
+  },
+  {
+    "_id": "c32cfb38-7c36-44bf-83e2-e8297e1c5fe9",
+    "colId": "88a971ab-c770-45ef-8dbf-ed2a3c1164b7",
+    "containerId": "7d01e0e2-66c0-4026-b358-cef047cd6af0",
+    "name": "get books",
+    "url": "{{BASE_URL}}/book-service/api/v1/books",
+    "method": "GET",
+    "sortNum": 90000,
+    "created": "2022-10-09T06:19:49.246Z",
+    "modified": "2022-10-09T06:23:01.226Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "b59d959c-1f2a-450f-b673-390526ccf194",
+    "colId": "88a971ab-c770-45ef-8dbf-ed2a3c1164b7",
+    "containerId": "7d01e0e2-66c0-4026-b358-cef047cd6af0",
+    "name": "create book",
+    "url": "{{BASE_URL}}/book-service/api/v1/books",
+    "method": "POST",
+    "sortNum": 100000,
+    "created": "2022-10-09T06:20:02.831Z",
+    "modified": "2022-10-09T06:26:54.571Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"title\": \"book 1\",\n  \"description\": \"nice 1\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "de4ac3b5-1d53-4ec4-a26f-7e2aaa7416e7",
+    "colId": "88a971ab-c770-45ef-8dbf-ed2a3c1164b7",
+    "containerId": "7d01e0e2-66c0-4026-b358-cef047cd6af0",
+    "name": "delete book",
+    "url": "{{BASE_URL}}/book-service/api/v1/books/4caab14c-f856-4b23-ac8f-f83ae1c133e2",
+    "method": "DELETE",
+    "sortNum": 110000,
+    "created": "2022-10-09T06:20:13.466Z",
+    "modified": "2022-10-09T06:27:29.517Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "ad9c834d-7b82-4e87-99ba-1eeacc8e458c",
+    "colId": "88a971ab-c770-45ef-8dbf-ed2a3c1164b7",
+    "containerId": "7d01e0e2-66c0-4026-b358-cef047cd6af0",
+    "name": "update book",
+    "url": "{{BASE_URL}}/book-service/api/v1/books/4caab14c-f856-4b23-ac8f-f83ae1c133e2",
+    "method": "PATCH",
+    "sortNum": 120000,
+    "created": "2022-10-09T06:20:24.238Z",
+    "modified": "2022-10-09T06:28:17.676Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"title\": \"book 1 updated\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "243ff072-31bb-4e55-bf8b-be51571d475c",
+    "colId": "88a971ab-c770-45ef-8dbf-ed2a3c1164b7",
+    "containerId": "7d01e0e2-66c0-4026-b358-cef047cd6af0",
+    "name": "get book",
+    "url": "{{BASE_URL}}/book-service/api/v1/books/4caab14c-f856-4b23-ac8f-f83ae1c133e2",
+    "method": "GET",
+    "sortNum": 95000,
+    "created": "2022-10-09T06:20:38.048Z",
+    "modified": "2022-10-09T06:28:03.091Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]

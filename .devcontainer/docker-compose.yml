@@ -32,6 +32,22 @@ services:
       MYSQL_USER: ${AUTHOR_API_DB_USER:-mysql}
       MYSQL_PASSWORD: ${AUTHOR_API_DB_PASSWORD:-thisIsReallyStrongPassword123}
 
+  book-api-mysql:
+    container_name: ${PROJECT_NAME:-default}-book-api-mysql-container
+    restart: unless-stopped
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - ${DB_PORT:-3305}:3306
+    volumes:
+      # - ./docker/mysql/init-tables.sql:/docker-entrypoint-initdb.d/init-tables.sql
+      - ./.docker/book_api_mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${BOOK_API_DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
+      MYSQL_DATABASE: ${BOOK_API_DB_DATABASE:-dev}
+      MYSQL_USER: ${BOOK_API_DB_USER:-mysql}
+      MYSQL_PASSWORD: ${BOOK_API_DB_PASSWORD:-thisIsReallyStrongPassword123}
+
   nginx:
     build:
       context: ./docker/nginx
