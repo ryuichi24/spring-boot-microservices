@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.juniordevmind.bookapi.dtos.BookDto;
 import com.juniordevmind.bookapi.dtos.CreateBookDto;
 import com.juniordevmind.bookapi.dtos.UpdateBookDto;
+import com.juniordevmind.bookapi.mappers.BookMapper;
 import com.juniordevmind.bookapi.models.Book;
 import com.juniordevmind.bookapi.repositories.BookRepository;
 import com.juniordevmind.shared.errors.NotFoundException;
@@ -20,46 +21,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepository _bookRepository;
+    private final BookMapper _bookMapper;
 
     @Override
     public List<BookDto> getBooks() {
-        List<Book> books = _bookRepository.findAll();
-        List<BookDto> bookDtos = books.stream().map(bookItem -> (BookDto) BookDto.builder()
-                .id(bookItem.getId())
-                .title(bookItem.getTitle())
-                .description(bookItem.getDescription())
-                .createdAt(bookItem.getCreatedAt())
-                .updatedAt(bookItem.getUpdatedAt())
-                .build()).toList();
-        return bookDtos;
+        return _bookRepository.findAll().stream().map(bookItem -> _bookMapper.toDto(bookItem)).toList();
     }
 
     @Override
     public BookDto getBook(UUID id) {
-        Book book = _findBookById(id);
-        return BookDto.builder()
-                .id(book.getId())
-                .title(book.getTitle())
-                .description(book.getDescription())
-                .createdAt(book.getCreatedAt())
-                .updatedAt(book.getUpdatedAt())
-                .build();
+        return _bookMapper.toDto(_findBookById(id));
     }
 
     @Override
     public BookDto createBook(CreateBookDto dto) {
-        Book newBook = new Book();
-        newBook.setTitle(dto.getTitle());
-        newBook.setDescription(dto.getDescription());
-        Book savedBook = _bookRepository.save(newBook);
-        return BookDto.builder()
-                .id(savedBook.getId())
-                .title(savedBook.getTitle())
-                .description(savedBook.getDescription())
-                .createdAt(savedBook.getCreatedAt())
-                .updatedAt(savedBook.getUpdatedAt())
-                .build();
-
+        return _bookMapper.toDto(_bookRepository.save(new Book(dto.getTitle(), dto.getDescription())));
     }
 
     @Override

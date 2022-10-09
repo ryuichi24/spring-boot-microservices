@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.juniordevmind.authorapi.dtos.AuthorDto;
 import com.juniordevmind.authorapi.dtos.CreateAuthorDto;
 import com.juniordevmind.authorapi.dtos.UpdateAuthorDto;
+import com.juniordevmind.authorapi.mappers.AuthorMapper;
 import com.juniordevmind.authorapi.models.Author;
 import com.juniordevmind.authorapi.repositories.AuthorRepository;
 import com.juniordevmind.shared.errors.NotFoundException;
@@ -20,46 +21,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository _authorRepository;
+    private final AuthorMapper _authorMapper;
 
     @Override
     public List<AuthorDto> getAuthors() {
-        List<Author> authors = _authorRepository.findAll();
-        List<AuthorDto> authorDtos = authors.stream().map(author -> (AuthorDto) AuthorDto.builder()
-                .id(author.getId())
-                .name(author.getName())
-                .description(author.getDescription())
-                .createdAt(author.getCreatedAt())
-                .updatedAt(author.getUpdatedAt())
-                .build()).toList();
-        return authorDtos;
+        return _authorRepository.findAll().stream().map(author -> _authorMapper.toDto(author)).toList();
     }
 
     @Override
     public AuthorDto getAuthor(UUID id) {
-        Author author = _findAuthorById(id);
-        return AuthorDto.builder()
-                .id(author.getId())
-                .name(author.getName())
-                .description(author.getDescription())
-                .createdAt(author.getCreatedAt())
-                .updatedAt(author.getUpdatedAt())
-                .build();
+        return _authorMapper.toDto(_findAuthorById(id));
     }
 
     @Override
     public AuthorDto createAuthor(CreateAuthorDto dto) {
-        Author newAuthor = new Author();
-        newAuthor.setName(dto.getName());
-        newAuthor.setDescription(dto.getDescription());
-        Author savedAuthor = _authorRepository.save(newAuthor);
-        return AuthorDto.builder()
-                .id(savedAuthor.getId())
-                .name(savedAuthor.getName())
-                .description(savedAuthor.getDescription())
-                .createdAt(savedAuthor.getCreatedAt())
-                .updatedAt(savedAuthor.getUpdatedAt())
-                .build();
-
+        return _authorMapper.toDto(_authorRepository.save(new Author(dto.getName(), dto.getDescription())));
     }
 
     @Override
