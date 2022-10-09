@@ -12,6 +12,7 @@ import com.juniordevmind.bookapi.dtos.CreateBookDto;
 import com.juniordevmind.bookapi.dtos.UpdateBookDto;
 import com.juniordevmind.bookapi.models.Book;
 import com.juniordevmind.bookapi.repositories.BookRepository;
+import com.juniordevmind.shared.errors.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -86,7 +87,7 @@ public class BookServiceImpl implements BookService {
         Optional<Book> result = _bookRepository.findById(id);
 
         if (result.isEmpty()) {
-            throw new RuntimeException("Not found with this ID: " + id);
+            throw new NotFoundException("Not found with this ID: " + id);
         }
 
         return result.get();
