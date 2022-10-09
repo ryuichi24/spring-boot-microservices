@@ -50,6 +50,12 @@ project(':author-api') {
     }
 }
 
+project(':book-api') {
+    dependencies {
+        implementation project(':shared')
+    }
+}
+
 project(':shared') {
     bootJar {
         enabled = false

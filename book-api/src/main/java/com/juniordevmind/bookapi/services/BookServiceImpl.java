@@ -23,20 +23,26 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookDto> getBooks() {
         List<Book> books = _bookRepository.findAll();
-        List<BookDto> bookDtos = books.stream().map(bookItem -> new BookDto(
-                bookItem.getId(),
-                bookItem.getTitle(),
-                bookItem.getDescription())).toList();
+        List<BookDto> bookDtos = books.stream().map(bookItem -> (BookDto) BookDto.builder()
+                .id(bookItem.getId())
+                .title(bookItem.getTitle())
+                .description(bookItem.getDescription())
+                .createdAt(bookItem.getCreatedAt())
+                .updatedAt(bookItem.getUpdatedAt())
+                .build()).toList();
         return bookDtos;
     }
 
     @Override
     public BookDto getBook(UUID id) {
         Book book = _findBookById(id);
-        return new BookDto(
-                book.getId(),
-                book.getTitle(),
-                book.getDescription());
+        return BookDto.builder()
+                .id(book.getId())
+                .title(book.getTitle())
+                .description(book.getDescription())
+                .createdAt(book.getCreatedAt())
+                .updatedAt(book.getUpdatedAt())
+                .build();
     }
 
     @Override
@@ -45,10 +51,13 @@ public class BookServiceImpl implements BookService {
         newBook.setTitle(dto.getTitle());
         newBook.setDescription(dto.getDescription());
         Book savedBook = _bookRepository.save(newBook);
-        return new BookDto(
-                savedBook.getId(),
-                savedBook.getTitle(),
-                savedBook.getDescription());
+        return BookDto.builder()
+                .id(savedBook.getId())
+                .title(savedBook.getTitle())
+                .description(savedBook.getDescription())
+                .createdAt(savedBook.getCreatedAt())
+                .updatedAt(savedBook.getUpdatedAt())
+                .build();
 
     }
 

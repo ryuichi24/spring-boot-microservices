@@ -1,16 +1,19 @@
 package com.juniordevmind.bookapi.dtos;
 
-import java.util.UUID;
+import com.juniordevmind.shared.models.DtoBase;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookDto {
-    private UUID id;
+@SuperBuilder
+@EqualsAndHashCode(callSuper = false)
+public class BookDto extends DtoBase {
     private String title;
     private String description;
 }
