@@ -48,6 +48,19 @@ services:
       MYSQL_USER: ${BOOK_API_DB_USER:-mysql}
       MYSQL_PASSWORD: ${BOOK_API_DB_PASSWORD:-thisIsReallyStrongPassword123}
 
+  rabbitMQ:
+    image: rabbitmq:3.9.13-management-alpine
+    container_name: ${PROJECT_NAME:-default}-rabbitMQ-container
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./.docker/rabbitmqdata:/var/lib/rabbitmq
+      - ./.docker/rabbitmqlog:/var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME:-rabbitmq}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-rabbitmq}
+
   nginx:
     build:
       context: ./docker/nginx

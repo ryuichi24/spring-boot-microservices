@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import com.juniordevmind.authorapi.dtos.AuthorDto;
@@ -13,6 +14,7 @@ import com.juniordevmind.authorapi.dtos.UpdateAuthorDto;
 import com.juniordevmind.authorapi.mappers.AuthorMapper;
 import com.juniordevmind.authorapi.models.Author;
 import com.juniordevmind.authorapi.repositories.AuthorRepository;
+import com.juniordevmind.shared.constants.RabbitMQKeys;
 import com.juniordevmind.shared.errors.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository _authorRepository;
     private final AuthorMapper _authorMapper;
+    private final RabbitTemplate _template;
 
     @Override
     public List<AuthorDto> getAuthors() {
@@ -35,7 +38,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public AuthorDto createAuthor(CreateAuthorDto dto) {
-        return _authorMapper.toDto(_authorRepository.save(new Author(dto.getName(), dto.getDescription())));
+        Author savedAuthor = _authorRepository.save(new Author(dto.getName(), dto.getDescription()));
+        _template.convertAndSend(RabbitMQKeys.AUTHOR_CREATED_EXCHANGE, null, savedAuthor);
+        return _authorMapper.toDto(savedAuthor);
     }
 
     @Override
