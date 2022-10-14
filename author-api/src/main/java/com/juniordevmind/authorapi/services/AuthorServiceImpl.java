@@ -1,5 +1,6 @@
 package com.juniordevmind.authorapi.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,7 +16,9 @@ import com.juniordevmind.authorapi.mappers.AuthorMapper;
 import com.juniordevmind.authorapi.models.Author;
 import com.juniordevmind.authorapi.repositories.AuthorRepository;
 import com.juniordevmind.shared.constants.RabbitMQKeys;
+import com.juniordevmind.shared.domain.AuthorEventDto;
 import com.juniordevmind.shared.errors.NotFoundException;
+import com.juniordevmind.shared.models.CustomMessage;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,7 +42,11 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public AuthorDto createAuthor(CreateAuthorDto dto) {
         Author savedAuthor = _authorRepository.save(new Author(dto.getName(), dto.getDescription()));
-        _template.convertAndSend(RabbitMQKeys.AUTHOR_CREATED_EXCHANGE, null, savedAuthor);
+        CustomMessage<AuthorEventDto> message = new CustomMessage<>();
+        message.setMessageId(UUID.randomUUID());
+        message.setMessageDate(LocalDateTime.now());
+        message.setPayload(_authorMapper.toEventDto(savedAuthor));
+        _template.convertAndSend(RabbitMQKeys.AUTHOR_CREATED_EXCHANGE, null, message);
         return _authorMapper.toDto(savedAuthor);
     }
 
