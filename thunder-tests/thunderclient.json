@@ -144,12 +144,12 @@
     "method": "POST",
     "sortNum": 100000,
     "created": "2022-10-09T06:20:02.831Z",
-    "modified": "2022-10-09T06:26:54.571Z",
+    "modified": "2022-10-16T07:04:43.904Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"title\": \"book 1\",\n  \"description\": \"nice 1\"\n}",
+      "raw": "{\n  \"title\": \"book 1\",\n  \"description\": \"nice 1\",\n  \"authors\": [\"3f1b6709-e4b3-4d9e-8a54-16476b23fb2a\"]\n}",
       "form": []
     },
     "tests": []
@@ -192,11 +192,11 @@
     "colId": "88a971ab-c770-45ef-8dbf-ed2a3c1164b7",
     "containerId": "7d01e0e2-66c0-4026-b358-cef047cd6af0",
     "name": "get book",
-    "url": "{{BASE_URL}}/book-service/api/v1/books/4caab14c-f856-4b23-ac8f-f83ae1c133e2",
+    "url": "{{BASE_URL}}/book-service/api/v1/books/af49273d-8702-432b-ae0c-1d1d69c977d2",
     "method": "GET",
     "sortNum": 95000,
     "created": "2022-10-09T06:20:38.048Z",
-    "modified": "2022-10-09T06:28:03.091Z",
+    "modified": "2022-10-16T07:04:54.808Z",
     "headers": [],
     "params": [],
     "tests": []
