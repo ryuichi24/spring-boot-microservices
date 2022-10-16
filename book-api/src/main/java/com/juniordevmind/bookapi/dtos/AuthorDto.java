@@ -1,8 +1,5 @@
 package com.juniordevmind.bookapi.dtos;
 
-import java.util.List;
-import java.util.UUID;
-
 import com.juniordevmind.shared.models.DtoBase;
 
 import lombok.AllArgsConstructor;
@@ -12,13 +9,11 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Data
+@SuperBuilder
+@EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
-@EqualsAndHashCode(callSuper = false)
-public class BookDto extends DtoBase {
-    private String title;
+public class AuthorDto extends DtoBase {
+    private String name;
     private String description;
-    private List<AuthorDto> authors;
-    private List<UUID> authorIds;
 }
