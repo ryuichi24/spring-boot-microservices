@@ -21,6 +21,11 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public FanoutExchange authorDeletedExchange() {
+        return new FanoutExchange(RabbitMQKeys.AUTHOR_DELETED_EXCHANGE);
+    }
+
+    @Bean
     public MessageConverter messageConverter() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
