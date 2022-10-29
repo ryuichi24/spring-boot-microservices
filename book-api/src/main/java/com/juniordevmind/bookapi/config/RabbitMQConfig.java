@@ -16,6 +16,7 @@ import com.juniordevmind.shared.constants.RabbitMQKeys;
 public class RabbitMQConfig {
     public static final String QUEUE_AUTHOR_CREATED = "book-api.message.queue.author.created";
     public static final String QUEUE_AUTHOR_DELETED = "book-api.message.queue.author.deleted";
+    public static final String QUEUE_AUTHOR_UPDATED = "book-api.message.queue.author.updated";
     // consumer
 
     // author created event
@@ -52,6 +53,24 @@ public class RabbitMQConfig {
         return BindingBuilder
                 .bind(authorDeletedQueue)
                 .to(authorDeletedExchange);
+    }
+
+    // author updated event
+    @Bean
+    public Queue authorUpdatedQueue() {
+        return new Queue(QUEUE_AUTHOR_UPDATED);
+    }
+
+    @Bean
+    public FanoutExchange authorUpdatedExchange() {
+        return new FanoutExchange(RabbitMQKeys.AUTHOR_UPDATED_EXCHANGE);
+    }
+
+    @Bean
+    public Binding authorUpdatedBinding(Queue authorUpdatedQueue, FanoutExchange authorUpdatedExchange) {
+        return BindingBuilder
+                .bind(authorUpdatedQueue)
+                .to(authorUpdatedExchange);
     }
 
     @Bean

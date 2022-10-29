@@ -29,6 +29,9 @@ public class AuthorDeletedEventListener {
 
     @RabbitListener(queues = { RabbitMQConfig.QUEUE_AUTHOR_DELETED })
     public void handleMessage(CustomMessage<AuthorEventDto> message) {
+        log.info("{} got triggered. got a message: {}", AuthorDeletedEventListener.class,
+        message.getPayload().toString());
+
         AuthorEventDto authorEventDto = message.getPayload();
         Optional<Author> existingAuthor = _authorRepository.findById(authorEventDto.getId());
         if (existingAuthor.isEmpty()) {
@@ -43,8 +46,5 @@ public class AuthorDeletedEventListener {
                     .filter(authorId -> !authorId.equals(authorEventDto.getId())).toList();
             bookItem.setAuthors(filtered);
         }
-
-        log.info("{} got triggered. got a message: {}", AuthorDeletedEventListener.class,
-                message.getPayload().toString());
     }
 }

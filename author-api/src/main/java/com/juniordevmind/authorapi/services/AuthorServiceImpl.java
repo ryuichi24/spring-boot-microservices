@@ -63,17 +63,23 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void updateAuthor(UpdateAuthorDto dto, UUID id) {
-        Author found = _findAuthorById(id);
+        Author existingAuthor = _findAuthorById(id);
 
         if (Objects.nonNull(dto.getName())) {
-            found.setName(dto.getName());
+            existingAuthor.setName(dto.getName());
         }
 
         if (Objects.nonNull(dto.getDescription())) {
-            found.setDescription(dto.getDescription());
+            existingAuthor.setDescription(dto.getDescription());
         }
 
-        _authorRepository.save(found);
+        _authorRepository.save(existingAuthor);
+
+        CustomMessage<AuthorEventDto> message = new CustomMessage<>();
+        message.setMessageId(UUID.randomUUID());
+        message.setMessageDate(LocalDateTime.now());
+        message.setPayload(_authorMapper.toEventDto(existingAuthor));
+        _template.convertAndSend(RabbitMQKeys.AUTHOR_UPDATED_EXCHANGE, null, message);
     }
 
     private Author _findAuthorById(UUID id) {
