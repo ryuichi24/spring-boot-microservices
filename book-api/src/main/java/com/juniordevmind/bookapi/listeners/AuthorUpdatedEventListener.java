@@ -39,17 +39,20 @@ public class AuthorUpdatedEventListener {
         existingAuthor.setName(authorEventDto.getName());
         existingAuthor.setDescription(authorEventDto.getDescription());
 
-        List<Book> books = _bookRepository.findAllByAuthors(authorEventDto.getId());
+        List<Book> oldBooks = _bookRepository.findAllByAuthors(authorEventDto.getId());
         List<UUID> newBookIds = authorEventDto.getBooks();
-        for (Book bookItem : books) {
-            if (newBookIds.contains(bookItem.getId())) {
-                if (!bookItem.getAuthors().contains(authorEventDto.getId())) {
-                    bookItem.getAuthors().add(authorEventDto.getId());
-                }
-            } else {
-                bookItem.getAuthors().remove(authorEventDto.getId());
-            }
+        List<Book> newBooks = _bookRepository.findAllById(newBookIds);
 
+        for (Book newBookItem : newBooks) {
+            if (!newBookItem.getAuthors().contains(authorEventDto.getId())) {
+                newBookItem.getAuthors().add(authorEventDto.getId());
+            }
+        }
+
+        for (Book oldBookItem : oldBooks) {
+            if (!newBookIds.contains(oldBookItem.getId())) {
+                oldBookItem.getAuthors().remove(authorEventDto.getId());
+            }
         }
     }
 }

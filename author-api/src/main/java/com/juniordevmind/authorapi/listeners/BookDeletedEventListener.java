@@ -2,7 +2,6 @@ package com.juniordevmind.authorapi.listeners;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
@@ -23,33 +22,26 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class BookUpdatedListener {
+public class BookDeletedEventListener {
     private final BookRepository _bookRepository;
     private final AuthorRepository _authorRepository;
 
-    @RabbitListener(queues = RabbitMQConfig.QUEUE_BOOK_UPDATED)
+    @RabbitListener(queues = RabbitMQConfig.QUEUE_BOOK_DELETED)
     public void handleMessage(CustomMessage<BookEventDto> message) {
-        log.info("{} got triggered. Message: {}", BookUpdatedListener.class, message.toString());
+        log.info("{} got triggered. Message: {}", BookDeletedEventListener.class, message.toString());
         BookEventDto bookEventDto = message.getPayload();
-        Optional<Book> maybeExistingBook = _bookRepository.findById(bookEventDto.getId());
-        if (maybeExistingBook.isEmpty()) {
+        Optional<Book> result = _bookRepository.findById(bookEventDto.getId());
+        if (result.isEmpty()) {
             return;
         }
-        Book existingBook = maybeExistingBook.get();
-        existingBook.setTitle(bookEventDto.getTitle());
-        existingBook.setDescription(bookEventDto.getDescription());
+
+        Book book = result.get();
+        _bookRepository.delete(book);
 
         List<Author> authors = _authorRepository.findAllByBooks(bookEventDto.getId());
-        List<UUID> newAuthorIds = bookEventDto.getAuthors();
-        for (Author authorItem : authors) {
-            if (newAuthorIds.contains(authorItem.getId())) {
-                if (!authorItem.getBooks().contains(bookEventDto.getId())) {
-                    authorItem.getBooks().add(bookEventDto.getId());
-                }
-            } else {
-                authorItem.getBooks().remove(bookEventDto.getId());
-            }
 
+        for (Author authorItem : authors) {
+            authorItem.getBooks().remove(bookEventDto.getId());
         }
     }
 }
