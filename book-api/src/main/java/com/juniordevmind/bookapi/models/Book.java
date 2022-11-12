@@ -31,7 +31,7 @@ public class Book extends EntityBase {
     private String description;
 
     @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "book_authors", joinColumns = @JoinColumn(name = "id"))
+    @CollectionTable(name = "book_authors", joinColumns = @JoinColumn(name = "book_id"))
     @Type(type = "uuid-char")
     @Column(name = "author_id")
     private List<UUID> authors;

@@ -1,11 +1,14 @@
 package com.juniordevmind.bookapi.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.juniordevmind.bookapi.dtos.AuthorDto;
 import com.juniordevmind.bookapi.dtos.BookDto;
@@ -17,17 +20,22 @@ import com.juniordevmind.bookapi.models.Author;
 import com.juniordevmind.bookapi.models.Book;
 import com.juniordevmind.bookapi.repositories.AuthorRepository;
 import com.juniordevmind.bookapi.repositories.BookRepository;
+import com.juniordevmind.shared.constants.RabbitMQKeys;
+import com.juniordevmind.shared.domain.BookEventDto;
 import com.juniordevmind.shared.errors.NotFoundException;
+import com.juniordevmind.shared.models.CustomMessage;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookServiceImpl implements BookService {
     private final BookRepository _bookRepository;
     private final AuthorRepository _authorRepository;
     private final BookMapper _bookMapper;
     private final AuthorMapper _authorMapper;
+    private final RabbitTemplate _template;
 
     @Override
     public List<BookDto> getBooks() {
@@ -46,13 +54,25 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto createBook(CreateBookDto dto) {
-        return _bookMapper.toDto(_bookRepository.save(new Book(dto.getTitle(), dto.getDescription(), dto.getAuthors())));
+        Book savedBook = _bookRepository.save(new Book(dto.getTitle(), dto.getDescription(), dto.getAuthors()));
+        CustomMessage<BookEventDto> message = new CustomMessage<>();
+        message.setMessageId(UUID.randomUUID());
+        message.setMessageDate(LocalDateTime.now());
+        message.setPayload(_bookMapper.toEventDto(savedBook));
+        _template.convertAndSend(RabbitMQKeys.BOOK_CREATED_EXCHANGE, null, message);
+        return _bookMapper.toDto(savedBook);
     }
 
     @Override
     public void deleteBook(UUID id) {
         Book book = _findBookById(id);
         _bookRepository.delete(book);
+        CustomMessage<BookEventDto> message = new CustomMessage<>();
+        message.setMessageId(UUID.randomUUID());
+        message.setMessageDate(LocalDateTime.now());
+        message.setPayload(_bookMapper.toEventDto(book));
+        _template.convertAndSend(RabbitMQKeys.BOOK_DELETED_EXCHANGE, null, message);
+
     }
 
     @Override
@@ -67,7 +87,17 @@ public class BookServiceImpl implements BookService {
             found.setDescription(dto.getDescription());
         }
 
+        if (Objects.nonNull(dto.getAuthors())) {
+            found.setAuthors(dto.getAuthors());
+        }
+
         _bookRepository.save(found);
+
+        CustomMessage<BookEventDto> message = new CustomMessage<>();
+        message.setMessageId(UUID.randomUUID());
+        message.setMessageDate(LocalDateTime.now());
+        message.setPayload(_bookMapper.toEventDto(found));
+        _template.convertAndSend(RabbitMQKeys.BOOK_UPDATED_EXCHANGE, null, message);
     }
 
     private Book _findBookById(UUID id) {

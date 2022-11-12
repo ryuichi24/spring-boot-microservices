@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.juniordevmind.bookapi.dtos.BookDto;
 import com.juniordevmind.bookapi.models.Book;
+import com.juniordevmind.shared.domain.BookEventDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,5 +16,9 @@ public class BookMapper {
 
     public BookDto toDto(Book entity) {
         return _modelMapper.map(entity, BookDto.class);
+    }
+
+    public BookEventDto toEventDto(Book entity) {
+        return _modelMapper.map(entity, BookEventDto.class);
     }
 }
