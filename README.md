@@ -1,8 +1,6 @@
 <h1 align="center">Spring Boot Microservices</h1>
 
-# How to get started
+This is a project for my youtube video tutorial.
 
-## Create `.env` file for the dev container
-```bash
-./make_env.sh
-```
+https://www.youtube.com/watch?v=g2Qacf6TAp0&list=PLOvyErVZBqQPsJP6Za_TKlJoUudGyZT6I
+
