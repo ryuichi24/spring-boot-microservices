@@ -1,0 +1,114 @@
+# https://stackoverflow.com/questions/64221861/an-error-failed-to-solve-with-frontend-dockerfile-v0
+version: "3.9"
+
+services:
+  author-service:
+    build:
+      context: ./
+      dockerfile: ./author-api/Dockerfile
+    container_name: ${PROJECT_NAME:-default}-author-service-prod-container
+    ports:
+      - 80
+    environment:
+      PORT: 80
+    depends_on:
+      - author-api-mysql
+
+  book-service:
+    build:
+      context: ./
+      dockerfile: ./book-api/Dockerfile
+    container_name: ${PROJECT_NAME:-default}-book-service-prod-container
+    ports:
+      - 80
+    environment:
+      PORT: 80
+    depends_on:
+      - book-api-mysql
+
+  comment-service:
+    build:
+      context: ./
+      dockerfile: ./comment-api/Dockerfile
+    container_name: ${PROJECT_NAME:-default}-comment-service-prod-container
+    ports:
+      - 80
+    environment:
+      PORT: 80
+    depends_on:
+      - comment-api-mysql
+
+  author-api-mysql:
+    container_name: ${PROJECT_NAME:-default}-author-api-mysql-container
+    restart: always
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - ${DB_PORT:-3306}:3306
+    volumes:
+      # - ./docker/mysql/init-tables.sql:/docker-entrypoint-initdb.d/init-tables.sql
+      - ./.docker/author_api_mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
+      MYSQL_DATABASE: ${DB_DATABASE:-prod}
+      MYSQL_USER: ${DB_USER:-mysql}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
+
+  book-api-mysql:
+    container_name: ${PROJECT_NAME:-default}-book-api-mysql-container
+    restart: always
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - ${DB_PORT:-3305}:3306
+    volumes:
+      # - ./docker/mysql/init-tables.sql:/docker-entrypoint-initdb.d/init-tables.sql
+      - ./.docker/book_api_mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
+      MYSQL_DATABASE: ${DB_DATABASE:-prod}
+      MYSQL_USER: ${DB_USER:-mysql}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
+
+  comment-api-mysql:
+    container_name: ${PROJECT_NAME:-default}-comment-api-mysql-container
+    restart: always
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - ${DB_PORT:-3304}:3306
+    volumes:
+      # - ./docker/mysql/init-tables.sql:/docker-entrypoint-initdb.d/init-tables.sql
+      - ./.docker/comment_api_mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
+      MYSQL_DATABASE: ${DB_DATABASE:-prod}
+      MYSQL_USER: ${DB_USER:-mysql}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
+
+  rabbitMQ:
+    image: rabbitmq:3.9.13-management-alpine
+    container_name: ${PROJECT_NAME:-default}-rabbitMQ-prod-container
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./.docker/rabbitmqdata:/var/lib/rabbitmq
+      - ./.docker/rabbitmqlog:/var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME:-rabbitmq}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-rabbitmq}
+    hostname: rabbitmq
+
+  nginx:
+    build:
+      context: ./api-gateway
+    container_name: ${PROJECT_NAME:-default}-nginx-prod-container
+    ports:
+      - 3333:80
+    volumes:
+      - ./api-gateway/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - author-service
+      - book-service
+      - comment-service
