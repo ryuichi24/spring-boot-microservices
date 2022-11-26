@@ -12,5 +12,19 @@
         "value": "http://nginx:80"
       }
     ]
+  },
+  {
+    "_id": "b2d6be4e-0ae0-461a-aad1-dd212e1d3152",
+    "name": "local",
+    "default": false,
+    "sortNum": 15000,
+    "created": "2022-11-26T08:58:49.479Z",
+    "modified": "2022-11-26T08:58:49.479Z",
+    "data": [
+      {
+        "name": "BASE_URL",
+        "value": "http://localhost:3333"
+      }
+    ]
   }
 ]
