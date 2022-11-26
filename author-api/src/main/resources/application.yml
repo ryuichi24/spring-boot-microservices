@@ -1,11 +1,6 @@
 server:
   port: ${PORT:8080}
 
-# spring:
-#   autoconfigure:
-#     exclude:
-#       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-
 spring: 
   jpa:
     hibernate:

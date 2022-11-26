@@ -1,14 +1,13 @@
-FROM gradle:jdk18 AS build
+FROM gradle:jdk17 AS build
 
 ARG BUILD_DIR=/home/build
 
 COPY . ${BUILD_DIR}
 WORKDIR ${BUILD_DIR}
 
-ENV SPRING_PROFILES_ACTIVE=prod
 RUN gradle comment-api:build --no-daemon
 
-FROM openjdk:18.0
+FROM openjdk:17.0
 
 RUN mkdir /app
 
