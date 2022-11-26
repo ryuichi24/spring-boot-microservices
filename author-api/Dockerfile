@@ -13,7 +13,6 @@ RUN mkdir /app
 
 EXPOSE 80
 
-# https://stackoverflow.com/a/63640896/13723015
 ENV PORT=80
 ENV DB_HOST=author-api-mysql
 ENV DB_PORT=3306
