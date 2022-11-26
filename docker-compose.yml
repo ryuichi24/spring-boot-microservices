@@ -11,6 +11,14 @@ services:
       - 80
     depends_on:
       - author-api-mysql
+    environment:
+      PORT: 80
+      DB_HOST: author-api-mysql
+      DB_NAME: ${AUTHOR_API_DB_NAME:-prod}
+      DB_USER: ${AUTHOR_API_DB_USER:-mysql}
+      DB_PASSWORD: ${AUTHOR_API_DB_PASSWORD:-thisIsReallyStrongPassword123}
+      RABBIT_MQ_PASSWORD: ${RABBIT_MQ_PASSWORD:-rabbitmq}
+      RABBIT_MQ_USERNAME: ${RABBIT_MQ_USERNAME:-rabbitmq}
 
   book-service:
     restart: on-failure
@@ -22,6 +30,14 @@ services:
       - 80
     depends_on:
       - book-api-mysql
+    environment:
+      PORT: 80
+      DB_HOST: book-api-mysql
+      DB_NAME: ${BOOK_API_DB_NAME:-prod}
+      DB_USER: ${BOOK_API_DB_USER:-mysql}
+      DB_PASSWORD: ${BOOK_API_DB_PASSWORD:-thisIsReallyStrongPassword123}
+      RABBIT_MQ_PASSWORD: ${RABBIT_MQ_PASSWORD:-rabbitmq}
+      RABBIT_MQ_USERNAME: ${RABBIT_MQ_USERNAME:-rabbitmq}
 
   comment-service:
     restart: on-failure
@@ -31,8 +47,9 @@ services:
     container_name: ${PROJECT_NAME:-default}-comment-service-prod-container
     ports:
       - 80
-    depends_on:
-      - comment-api-mysql
+    environment:
+      PORT: 80
+
 
   author-api-mysql:
     container_name: ${PROJECT_NAME:-default}-author-api-mysql-prod-container
@@ -40,14 +57,14 @@ services:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
     ports:
-      - ${DB_PORT:-3306}:3306
+      - 3306:3306
     volumes:
       - ./.docker/author_api_mysql_data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
-      MYSQL_DATABASE: ${DB_DATABASE:-prod}
-      MYSQL_USER: ${DB_USER:-mysql}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
+      MYSQL_ROOT_PASSWORD: ${AUTHOR_API_DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
+      MYSQL_DATABASE: ${AUTHOR_API_DB_NAME:-prod}
+      MYSQL_USER: ${AUTHOR_API_DB_USER:-mysql}
+      MYSQL_PASSWORD: ${AUTHOR_API_DB_PASSWORD:-thisIsReallyStrongPassword123}
 
   book-api-mysql:
     container_name: ${PROJECT_NAME:-default}-book-api-mysql-prod-container
@@ -55,29 +72,14 @@ services:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
     ports:
-      - ${DB_PORT:-3305}:3306
+      - 3305:3306
     volumes:
       - ./.docker/book_api_mysql_data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
-      MYSQL_DATABASE: ${DB_DATABASE:-prod}
-      MYSQL_USER: ${DB_USER:-mysql}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
-
-  comment-api-mysql:
-    container_name: ${PROJECT_NAME:-default}-comment-api-mysql-prod-container
-    restart: unless-stopped
-    image: mysql:8.0
-    command: --default-authentication-plugin=mysql_native_password
-    ports:
-      - ${DB_PORT:-3304}:3306
-    volumes:
-      - ./.docker/comment_api_mysql_data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
-      MYSQL_DATABASE: ${DB_DATABASE:-prod}
-      MYSQL_USER: ${DB_USER:-mysql}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-thisIsReallyStrongPassword123}
+      MYSQL_ROOT_PASSWORD: ${BOOK_API_DB_ROOT_PASSWORD:-thisIsReallyStrongPassword123}
+      MYSQL_DATABASE: ${BOOK_API_DB_NAME:-prod}
+      MYSQL_USER: ${BOOK_API_DB_USER:-mysql}
+      MYSQL_PASSWORD: ${BOOK_API_DB_PASSWORD:-thisIsReallyStrongPassword123}
 
   rabbitMQ:
     image: rabbitmq:3.9.13-management-alpine
@@ -98,7 +100,7 @@ services:
       context: ./api-gateway
     container_name: ${PROJECT_NAME:-default}-nginx-prod-container
     ports:
-      - 3333:80
+      - 80:80
     volumes:
       - ./api-gateway/conf.d:/etc/nginx/conf.d
     depends_on:
