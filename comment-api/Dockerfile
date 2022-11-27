@@ -2,7 +2,11 @@ FROM gradle:jdk17 AS build
 
 ARG BUILD_DIR=/home/build
 
-COPY . ${BUILD_DIR}
+COPY ./comment-api ${BUILD_DIR}/comment-api
+COPY ./shared ${BUILD_DIR}/shared
+COPY ./build.gradle ${BUILD_DIR}
+COPY ./settings.gradle ${BUILD_DIR}
+
 WORKDIR ${BUILD_DIR}
 
 RUN gradle comment-api:build --no-daemon
