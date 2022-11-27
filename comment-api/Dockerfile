@@ -9,7 +9,7 @@ COPY ./settings.gradle ${BUILD_DIR}
 
 WORKDIR ${BUILD_DIR}
 
-RUN gradle comment-api:build --no-daemon
+RUN gradle comment-api:build
 
 FROM openjdk:17.0
 

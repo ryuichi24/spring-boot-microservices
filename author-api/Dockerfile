@@ -9,7 +9,7 @@ COPY ./settings.gradle ${BUILD_DIR}
 
 WORKDIR ${BUILD_DIR}
 
-RUN gradle author-api:build --no-daemon
+RUN gradle author-api:build
 
 FROM openjdk:17.0
 
