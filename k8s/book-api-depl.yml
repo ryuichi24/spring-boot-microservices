@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book-api-depl
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: book-api-pod
+  template:
+    metadata:
+      labels:
+        app: book-api-pod
+    spec:
+      containers:
+        - name: book-api-container
+          image: __DOCKER_IMAGE__
+          env:
+            - name: PORT
+              value: "80"
+            - name: RABBIT_MQ_HOST
+              value: rabbitmq-clusterip-srv
+            - name: RABBIT_MQ_PASSWORD
+              value: rabbitmq
+            - name: RABBIT_MQ_USERNAME
+              value: rabbitmq
+            - name: DB_HOST
+              value: book-api-mysql-clusterip-srv
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_NAME
+              value: prod
+            - name: DB_USER
+              value: mysql
+            - name: DB_PASSWORD
+              value: thisIsReallyStrongPassword123
+          # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+
+---
+# https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: v1
+kind: Service
+metadata:
+  name: book-api-clusterIP
+spec:
+  type: ClusterIP
+  selector:
+    app: book-api-pod
+  ports:
+    - name: book-api-port
+      port: 80
+      targetPort: 80
+      protocol: TCP
