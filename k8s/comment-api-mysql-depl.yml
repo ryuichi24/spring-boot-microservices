@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comment-api-mysql-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comment-api-mysql-pod
+  template:
+    metadata:
+      labels:
+        app: comment-api-mysql-pod
+    spec:
+      containers:
+        - name: comment-api-mysql-container
+          image: mysql:8.0
+          ports:
+            - containerPort: 3306
+              name: commentmysqlpt
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: thisIsReallyStrongPassword123
+            - name: MYSQL_DATABASE
+              value: prod
+            - name: MYSQL_USER
+              value: mysql
+            - name: MYSQL_PASSWORD
+              value: thisIsReallyStrongPassword123
+          # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comment-api-mysql-clusterIP
+spec:
+  type: ClusterIP
+  selector:
+    app: comment-api-mysql-pod
+  ports:
+    - name: commentmysqlpt
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comment-api-mysql-loadbalancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: comment-api-mysql-pod
+  ports:
+    - name: commentmysqlpt
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
