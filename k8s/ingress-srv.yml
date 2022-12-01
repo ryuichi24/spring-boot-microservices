@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-srv
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+    nginx.ingress.kubernetes.io/rewrite-target: /$1$2
+spec:
+  rules:
+    - host: test.com
+      http:
+        paths:
+          - path: /author-service/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: author-api-clusterIP
+                port:
+                  number: 80
+          - path: /book-service/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: book-api-clusterIP
+                port:
+                  number: 80
+          - path: /comment-service/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: comment-api-clusterIP
+                port:
+                  number: 80
