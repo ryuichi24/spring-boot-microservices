@@ -34,7 +34,6 @@ spec:
               value: mysql
             - name: DB_PASSWORD
               value: thisIsReallyStrongPassword123
-          # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
           resources:
             limits:
               memory: 512Mi
@@ -44,7 +43,6 @@ spec:
               cpu: "0.2"
 
 ---
-# https://kubernetes.io/docs/concepts/services-networking/service/
 apiVersion: v1
 kind: Service
 metadata:

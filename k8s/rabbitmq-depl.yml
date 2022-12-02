@@ -25,7 +25,6 @@ spec:
               value: rabbitmq
             - name: RABBITMQ_DEFAULT_PASS
               value: rabbitmq
-          # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
           resources:
             limits:
               memory: 512Mi
