@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: comment-api-container
-          image: __DOCKER_IMAGE__
+          image: ryuichi24/bookdb-comment-service:9c93b0b
           env:
             - name: PORT
               value: "80"
@@ -30,7 +30,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: comment-api-clusterIP
+  name: comment-api-cluster-ip
 spec:
   type: ClusterIP
   selector:

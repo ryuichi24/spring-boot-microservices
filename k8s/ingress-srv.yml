@@ -15,20 +15,20 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: author-api-clusterIP
+                name: author-api-cluster-ip
                 port:
                   number: 80
           - path: /book-service/(.*)
             pathType: Prefix
             backend:
               service:
-                name: book-api-clusterIP
+                name: book-api-cluster-ip
                 port:
                   number: 80
           - path: /comment-service/(.*)
             pathType: Prefix
             backend:
               service:
-                name: comment-api-clusterIP
+                name: comment-api-cluster-ip
                 port:
                   number: 80

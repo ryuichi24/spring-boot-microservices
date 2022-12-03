@@ -36,7 +36,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: rabbitmq-clusterIP
+  name: rabbitmq-cluster-ip
 spec:
   type: ClusterIP
   selector:

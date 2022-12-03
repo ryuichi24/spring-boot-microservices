@@ -27,7 +27,6 @@ spec:
               value: mysql
             - name: MYSQL_PASSWORD
               value: thisIsReallyStrongPassword123
-          # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
           resources:
             limits:
               memory: 512Mi
@@ -39,7 +38,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: book-api-mysql-clusterIP
+  name: book-api-mysql-cluster-ip
 spec:
   type: ClusterIP
   selector:

@@ -19,13 +19,13 @@ spec:
             - name: PORT
               value: "80"
             - name: RABBIT_MQ_HOST
-              value: rabbitmq-clusterip-srv
+              value: rabbitmq-cluster-ip
             - name: RABBIT_MQ_PASSWORD
               value: rabbitmq
             - name: RABBIT_MQ_USERNAME
               value: rabbitmq
             - name: DB_HOST
-              value: book-api-mysql-clusterip-srv
+              value: book-api-mysql-cluster-ip
             - name: DB_PORT
               value: "3306"
             - name: DB_NAME
@@ -46,7 +46,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: book-api-clusterIP
+  name: book-api-cluster-ip
 spec:
   type: ClusterIP
   selector:
