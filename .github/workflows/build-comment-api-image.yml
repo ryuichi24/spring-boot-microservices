@@ -2,10 +2,10 @@ name: Build Docker Comment Api Image CI
 
 on:
   push:
-    branches: [ "add-k8s" ]
-    # paths:
-    #   - "comment-api/**"
-    #   - "shared/**"
+    branches: [ "main" ]
+    paths:
+      - "comment-api/**"
+      - "shared/**"
 
 jobs:
 
