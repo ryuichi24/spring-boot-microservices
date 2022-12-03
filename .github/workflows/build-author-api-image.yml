@@ -2,10 +2,10 @@ name: Build Docker Author Api Image CI
 
 on:
   push:
-    branches: [ "main" ]
-    paths:
-      - "author-api/**"
-      - "shared/**"
+    branches: [ "add-k8s" ]
+    # paths:
+    #   - "author-api/**"
+    #   - "shared/**"
 
 jobs:
 

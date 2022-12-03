@@ -2,10 +2,10 @@ name: Build Docker Book Api Image CI
 
 on:
   push:
-    branches: [ "main" ]
-    paths:
-      - "book-api/**"
-      - "shared/**"
+    branches: [ "add-k8s" ]
+    # paths:
+    #   - "book-api/**"
+    #   - "shared/**"
 
 jobs:
 
