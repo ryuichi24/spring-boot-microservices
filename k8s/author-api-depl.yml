@@ -56,3 +56,19 @@ spec:
       port: 80
       targetPort: 80
       protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: author-api-node-port
+spec:
+  type: NodePort
+  selector:
+    app: author-api-pod
+  ports:
+    - name: author-api-port
+      protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 8080
