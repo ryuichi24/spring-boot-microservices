@@ -15,6 +15,9 @@ spec:
       containers:
         - name: author-api-container
           image: __DOCKER_IMAGE__
+          ports:
+            - name: author-api-cp
+              containerPort: 80
           env:
             - name: PORT
               value: "80"
@@ -52,9 +55,9 @@ spec:
   selector:
     app: author-api-pod
   ports:
-    - name: author-api-port
+    - name: author-api-cip
       port: 80
-      targetPort: 80
+      targetPort: author-api-cp
       protocol: TCP
 
 ---
@@ -67,8 +70,9 @@ spec:
   selector:
     app: author-api-pod
   ports:
-    - name: author-api-port
+    - name: author-api-np
       protocol: TCP
       port: 80
-      targetPort: 80
-      nodePort: 8080
+      targetPort: author-api-cp
+      # not need to set
+      nodePort: 32222

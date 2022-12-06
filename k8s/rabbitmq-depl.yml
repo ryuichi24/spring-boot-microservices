@@ -16,10 +16,10 @@ spec:
         - name: rabbitmq-container
           image: rabbitmq:3.9.13-management-alpine
           ports:
-            - containerPort: 15672
-              name: rbmq-mgmt-port
-            - containerPort: 5672
-              name: rbmq-msg-port
+            - name: rbmq-mgmt-cp
+              containerPort: 15672
+            - name: rbmq-msg-cp
+              containerPort: 5672
           env:
             - name: RABBITMQ_DEFAULT_USER
               value: rabbitmq
@@ -42,14 +42,14 @@ spec:
   selector:
     app: rabbitmq-pod
   ports:
-    - name: rbmq-mgmt-port
+    - name: rbmq-mgmt-cip
       protocol: TCP
       port: 15672
-      targetPort: 15672
-    - name: rbmq-msg-port
+      targetPort: rbmq-mgmt-cp
+    - name: rbmq-msg-cip
       protocol: TCP
       port: 5672
-      targetPort: 5672
+      targetPort: rbmq-msg-cp
 ---
 apiVersion: v1
 kind: Service
@@ -60,11 +60,11 @@ spec:
   selector:
     app: rabbitmq-pod
   ports:
-    - name: rbmq-mgmt-port
+    - name: rbmq-mgmt-lp
       protocol: TCP
       port: 15672
-      targetPort: 15672
-    - name: rbmq-msg-port
+      targetPort: rbmq-mgmt-cp
+    - name: rbmq-msg-lp
       protocol: TCP
       port: 5672
-      targetPort: 5672
+      targetPort: rbmq-msg-cp

@@ -17,18 +17,21 @@ spec:
               service:
                 name: author-api-cluster-ip
                 port:
-                  number: 80
+                  name: author-api-cip
+                  # number: 80
           - path: /book-service/(.*)
             pathType: Prefix
             backend:
               service:
                 name: book-api-cluster-ip
                 port:
-                  number: 80
+                  name: book-api-cip
+                  # number: 80
           - path: /comment-service/(.*)
             pathType: Prefix
             backend:
               service:
                 name: comment-api-cluster-ip
                 port:
-                  number: 80
+                  name: comment-api-cip
+                  # number: 80

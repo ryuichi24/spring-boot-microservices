@@ -16,8 +16,8 @@ spec:
         - name: book-api-mysql-container
           image: mysql:8.0
           ports:
-            - containerPort: 3306
-              name: bookmysqlpt
+            -  name: book-mysql-cp
+               containerPort: 3306
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: thisIsReallyStrongPassword123
@@ -44,10 +44,10 @@ spec:
   selector:
     app: book-api-mysql-pod
   ports:
-    - name: bookmysqlpt
+    - name: book-mysql-cip
       protocol: TCP
       port: 3306
-      targetPort: 3306
+      targetPort: book-mysql-cp
 
 ---
 apiVersion: v1
@@ -59,7 +59,7 @@ spec:
   selector:
     app: book-api-mysql-pod
   ports:
-    - name: bookmysqlpt
+    - name: book-mysql-lp
       protocol: TCP
       port: 3306
-      targetPort: 3306
+      targetPort: book-mysql-cp

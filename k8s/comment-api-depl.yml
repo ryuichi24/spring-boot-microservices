@@ -14,7 +14,10 @@ spec:
     spec:
       containers:
         - name: comment-api-container
-          image: ryuichi24/bookdb-comment-service:9c93b0b
+          image: __DOCKER_IMAGE__
+          ports:
+            - name: comment-api-cp
+              containerPort: 80
           env:
             - name: PORT
               value: "80"
@@ -36,7 +39,7 @@ spec:
   selector:
     app: comment-api-pod
   ports:
-    - name: comment-api-port
+    - name: comment-api-cip
       port: 80
-      targetPort: 80
+      targetPort: comment-api-cp
       protocol: TCP
