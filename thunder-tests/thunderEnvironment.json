@@ -40,5 +40,19 @@
         "value": "test.com"
       }
     ]
+  },
+  {
+    "_id": "ed3800d6-8963-44ad-b03b-680e916031f6",
+    "name": "azure",
+    "default": false,
+    "sortNum": 35000,
+    "created": "2022-12-08T04:13:35.317Z",
+    "modified": "2022-12-08T04:13:35.317Z",
+    "data": [
+      {
+        "name": "BASE_URL",
+        "value": "http://20.43.90.50"
+      }
+    ]
   }
 ]
