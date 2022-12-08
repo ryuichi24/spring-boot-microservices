@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: book-api-depl
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: book-api-pod
@@ -37,13 +37,13 @@ spec:
               value: mysql
             - name: DB_PASSWORD
               value: thisIsReallyStrongPassword123
-          resources:
-            limits:
-              memory: 512Mi
-              cpu: "1"
-            requests:
-              memory: 256Mi
-              cpu: "0.2"
+          # resources:
+          #   limits:
+          #     memory: 512Mi
+          #     cpu: "1"
+          #   requests:
+          #     memory: 256Mi
+          #     cpu: "0.2"
 
 ---
 apiVersion: v1

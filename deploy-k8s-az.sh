@@ -23,4 +23,4 @@ sed "s,__DOCKER_IMAGE__,${BOOK_SERVICE_CONTAINER_IMAGE}," k8s/book-api-depl.yml 
 sed "s,__DOCKER_IMAGE__,${COMMENT_SERVICE_CONTAINER_IMAGE}," k8s/comment-api-depl.yml | kubectl apply -f -
 
 # api gateway
-kubectl apply -f k8s/ingress-srv.yml
+kubectl apply -f k8s/ingress-srv-az.yml
